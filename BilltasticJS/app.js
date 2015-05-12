@@ -14,7 +14,8 @@ mongoose.connect("mongodb://localhost:27017/BilltasticJS");
 
 var index = require('./routes/index');
 var register = require('./routes/register');
-var users = require('./routes/users');
+var logout = require('./routes/logout');
+var customer = require('./routes/customer');
 var test = require('./routes/test');
 
 var app = express();
@@ -49,6 +50,8 @@ passport.deserializeUser(function(id, done) {
 // routes
 app.use('/login', index);
 app.use('/register', register);
+app.use('/logout', logout);
+app.use('/api/customer', customer);
 app.use('/test', test);
 
 

@@ -4,11 +4,12 @@ var mongoose = require("mongoose"),
 
 var Customer = new Schema({
 	name: String,
+	telephone: Number,
+	address: String,
 	email: String,
-	username: String,
-	password: String
+	seller: String
 });
 
-Seller.plugin(passportLocalMongoose);
+Customer.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model("Seller", Seller);
+module.exports = mongoose.model("Customer", Customer);
