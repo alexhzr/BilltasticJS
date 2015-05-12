@@ -2,7 +2,7 @@ var mongoose = require("mongoose"),
 	Schema = mongoose.Schema,
 	passportLocalMongoose = require('passport-local-mongoose');
 
-var Seller = new Schema({
+var Customer = new Schema({
 	name: String,
 	email: String,
 	username: String,
