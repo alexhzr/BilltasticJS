@@ -5,12 +5,15 @@ var isAuthenticated = require('./isAuthenticated');
 var Customer = require('../models/customer');
 
 //to find by id
-router.get('/', function(req, res) {
-    res.json({ message: "base" });
+router.get('/', /*isAuthenticated, */function(req, res) {
+    Customer.find({ 'seller': '5551e12aaf8a71972b89a40a'/*req.session.passport.user*/ }, function(err, customerList) {
+        if (err) return handleError(err);
+        res.json(customerList);
+    })
 });
 
-router.get('/:id', /*isAuthenticated,*/ function(req, res) {
-    Customer.findById(req.body.customer_id, function(err, customer) {
+router.get('/:customer_id', /*isAuthenticated,*/ function(req, res) {
+    Customer.findById(req.params.customer_id, function(err, customer) {
         if (err)
             res.json({message: "fallo"});
         res.json(customer);
@@ -31,7 +34,7 @@ router.post('/', /*isAuthenticated,*/ function(req, res) {
     customer.save(function(err) {
       if(err)
            res.send(err);
-       else res.json({ message: "Customer created"});
+      else res.json({ message: "Customer created"});
    });
 });
 
