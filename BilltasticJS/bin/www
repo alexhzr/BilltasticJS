@@ -7,13 +7,16 @@
 var app = require('../app');
 var debug = require('debug')('BilltasticJS:server');
 var http = require('http');
+var config = require('../config.json');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(config.port || '3000');
 app.set('port', port);
+app.set('env', config.environment);
+app.set('title', config.title);
 
 /**
  * Create HTTP server.
