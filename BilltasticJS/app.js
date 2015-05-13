@@ -13,17 +13,20 @@ var LocalStrategy = require('passport-local').Strategy;
 mongoose.connect("mongodb://localhost:27017/BilltasticJS");
 
 var index = require('./routes/index');
+var login = require('./routes/login');
 var register = require('./routes/register');
 var logout = require('./routes/logout');
 var customer = require('./routes/customer');
 var tax = require('./routes/tax');
-var test = require('./routes/test');
+var product = require('./routes/product');
+var order = require('./routes/order');
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+app.set('env')
 
 // uncomment after placing your favicon in /public
 app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -49,15 +52,16 @@ passport.deserializeUser(function(id, done) {
 });
 
 /* ROUTES */
-app.use('/login', index);
+app.use('/login', login);
 app.use('/register', register);
 app.use('/logout', logout);
 
 //api routes
 app.use('/api/customer', customer);
 app.use('/api/tax', tax);
+app.use('/api/product', product);
+app.use('/api/order', order);
 
-app.use('/test', test);
 
 
 // catch 404 and forward to error handler
@@ -90,6 +94,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;
