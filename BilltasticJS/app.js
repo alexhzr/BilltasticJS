@@ -16,6 +16,7 @@ var index = require('./routes/index');
 var register = require('./routes/register');
 var logout = require('./routes/logout');
 var customer = require('./routes/customer');
+var tax = require('./routes/tax');
 var test = require('./routes/test');
 
 var app = express();
@@ -47,11 +48,15 @@ passport.deserializeUser(function(id, done) {
     });
 });
 
-// routes
+/* ROUTES */
 app.use('/login', index);
 app.use('/register', register);
 app.use('/logout', logout);
+
+//api routes
 app.use('/api/customer', customer);
+app.use('/api/tax', tax);
+
 app.use('/test', test);
 
 

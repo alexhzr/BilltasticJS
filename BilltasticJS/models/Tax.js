@@ -4,7 +4,7 @@ var mongoose = require("mongoose"),
 
 var Tax = new Schema({
 	name: String,
-	value: number,
+	value: Number,
 	seller: String
 });
 
