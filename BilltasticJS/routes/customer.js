@@ -34,7 +34,7 @@ router.post('/', /*isAuthenticated,*/ function(req, res) {
     customer.save(function(err) {
       if(err)
            res.send(err);
-      else res.json({ message: "Customer created"});
+      else res.json({ message: "Customer created", ObjectID: product._id });
    });
 });
 

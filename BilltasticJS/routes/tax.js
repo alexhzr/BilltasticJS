@@ -31,7 +31,7 @@ router.post('/', /*isAuthenticated,*/ function(req, res) {
     tax.save(function(err) {
       if(err)
            res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error creating tax"});
-      res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Tax created"});
+      res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Tax created", ObjectID: tax._id });
    });
 });
 
