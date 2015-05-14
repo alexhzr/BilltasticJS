@@ -7,14 +7,14 @@ var OrderDetail = require('../models/order');
 var moment = require('moment');
 var dateFormat = "DD/MM/YYYY HH:mm:SS";
 
-router.get('/', /*isAuthenticated, */function(req, res) {
+router.get('/', isAuthenticated, function(req, res) {
     Order.find({ seller: req.session.passport.user }, function(err, orderList) {
         if (err) return handleError(err);
         res.json(orderList);
     });
 });
 
-router.get('/:order_id', /*isAuthenticated,*/ function(req, res) {
+router.get('/:order_id', isAuthenticated, function(req, res) {
     Order.findById(req.params.product_id, function(err, order) {
         if (err)
             res.json({ SERVER_RESPONSE: 0, SERVER_RESPONSE: "Error loading orders" });
@@ -22,7 +22,7 @@ router.get('/:order_id', /*isAuthenticated,*/ function(req, res) {
     });
 });
 
-router.post('/', /*isAuthenticated,*/ function(req, res) {
+router.post('/', isAuthenticated, function(req, res) {
     var order = new Order ({
         order_date: moment(req.body.order_date, dateFormat),
         seller: req.session.passport.user,
@@ -34,8 +34,6 @@ router.post('/', /*isAuthenticated,*/ function(req, res) {
         printed: 0,
         sent: 0
     });
-
-    console.log("order.js - order created:\n"+order);
 
     order.save(function(err) {
       if(err)
