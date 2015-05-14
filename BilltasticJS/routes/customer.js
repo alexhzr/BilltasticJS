@@ -20,6 +20,14 @@ router.get('/:customer_id', isAuthenticated, function(req, res) {
     });
 });
 
+router.delete('/:customer_id', /*isAuthenticated,*/ function(req, res) {
+    Customer.remove({ _id: req.params.customer_id }, function(err) {
+        if (err)
+            res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error deleting", ERR: err });
+        else res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Delete ok" });
+    })
+});
+
 router.get('/:customer_id/orders', isAuthenticated, function(req, res) {
     Order.find({ customer: req.params.customer_id, seller: req.session.passport.user }, function(err, orderList) {
         if (err)
@@ -40,7 +48,7 @@ router.post('/', isAuthenticated, function(req, res) {
     customer.save(function(err) {
       if(err)
            res.send(err);
-      else res.json({ message: "Customer created", ObjectID: product._id });
+      else res.json({ message: "Customer created", ObjectID: customer._id });
    });
 });
 
