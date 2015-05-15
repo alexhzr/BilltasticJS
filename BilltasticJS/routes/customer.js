@@ -16,7 +16,8 @@ router.get('/:customer_id', isAuthenticated, function(req, res) {
     Customer.findById(req.params.customer_id, function(err, customer) {
         if (err)
             res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error getting customer info" });
-        else res.json(customer);
+        else if (customer != null)
+            res.json(customer);
     });
 });
 

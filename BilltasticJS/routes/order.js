@@ -15,11 +15,19 @@ router.get('/', isAuthenticated, function(req, res) {
 });
 
 router.get('/:order_id', isAuthenticated, function(req, res) {
-    Order.findById(req.params.product_id, function(err, order) {
+    Order.findById(req.params.order_id, function(err, order) {
         if (err)
             res.json({ SERVER_RESPONSE: 0, SERVER_RESPONSE: "Error loading orders" });
-        res.json(order);
+        else res.json(order);
     });
+});
+
+router.delete('/:order_id', isAuthenticated, function(req, res) {
+    Order.remove({ _id: req.params.order_id, seller: req.session.passport.user }, function(err, order) {
+        if (err)
+            res.json({ SERVER_RESPONSE: 0, SERVER_RESPONSE: "Error deleting" });
+        else res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Order deleted" });
+    })
 });
 
 router.post('/', isAuthenticated, function(req, res) {
