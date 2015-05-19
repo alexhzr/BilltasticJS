@@ -34,13 +34,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({ secret: 'gatico', resave: true, saveUninitialized: false  }));
+app.use(session({ secret: 'gatico', resave: true, saveUninitialized: false, cookie: { maxAge : 3600000 } }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 
 //passport config
-var Seller = require('./models/seller');
+var Seller = require('./models/Seller');
 passport.use(new LocalStrategy(Seller.authenticate()));
 passport.serializeUser(function(user, done){
     done(null, user._id)
@@ -52,6 +52,7 @@ passport.deserializeUser(function(id, done) {
 });
 
 /* ROUTES */
+app.use('/', index);
 app.use('/login', login);
 app.use('/register', register);
 app.use('/logout', logout);

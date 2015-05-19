@@ -1,6 +1,5 @@
 var mongoose = require("mongoose"),
-	Schema = mongoose.Schema,
-	passportLocalMongoose = require('passport-local-mongoose');
+	Schema = mongoose.Schema;
 
 var Order = require('./order');
 var Customer = new Schema({
@@ -11,11 +10,9 @@ var Customer = new Schema({
 	seller: String
 });
 
-Customer.pre('remove', function(next) {
-    Order.remove({ customer: this._id }).exec();
-    next();
+Customer.post('remove', function(doc) {
+	console.log(doc);
+    Order.remove({ customer: doc._id }).exec();
 });
-
-Customer.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("Customer", Customer);

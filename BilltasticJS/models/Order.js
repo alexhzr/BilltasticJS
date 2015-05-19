@@ -1,6 +1,5 @@
 var mongoose = require("mongoose"),
-	Schema = mongoose.Schema,
-	passportLocalMongoose = require('passport-local-mongoose');
+	Schema = mongoose.Schema;
 
 var Order = new Schema({
     order_date: Date,
@@ -13,7 +12,5 @@ var Order = new Schema({
     printed: Number,
     sent: Number
 });
-
-Order.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("Order", Order);

@@ -1,6 +1,5 @@
 var mongoose = require("mongoose"),
-	Schema = mongoose.Schema,
-	passportLocalMongoose = require('passport-local-mongoose');
+	Schema = mongoose.Schema;
 
 var Product = new Schema({
 	name: String,
@@ -8,7 +7,5 @@ var Product = new Schema({
 	tax: String,
 	seller: String
 });
-
-Product.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("Product", Product);
