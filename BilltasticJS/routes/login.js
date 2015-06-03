@@ -2,8 +2,9 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var Seller = require('../models/Seller');
+var isAuthenticated = require("./isAuthenticated");
 
-router.get('/', function(req, res, next) {
+router.get('/test', isAuthenticated, function(req, res, next) {
   res.json({ response: 'hola'});
 });
 
