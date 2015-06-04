@@ -2,10 +2,10 @@ var mongoose = require("mongoose"),
 	Schema = mongoose.Schema,
 	passportLocalMongoose = require('passport-local-mongoose');
 
-var Customer = require('./customer');
-var Product = require('./product');
-var Tax = require('./tax');
-var Order = require('./order');
+var Customer = require('./Customer');
+var Product = require('./Product');
+var Tax = require('./Tax');
+var Order = require('./Order');
 
 var Seller = new Schema({
 	name: String,

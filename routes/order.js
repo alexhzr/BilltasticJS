@@ -2,8 +2,7 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var isAuthenticated = require('./isAuthenticated');
-var Order = require('../models/order');
-var OrderDetail = require('../models/order');
+var Order = require('../models/Order');
 var moment = require('moment');
 var dateFormat = "DD/MM/YYYY HH:mm:SS";
 

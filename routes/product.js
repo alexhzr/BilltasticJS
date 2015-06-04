@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var isAuthenticated = require('./isAuthenticated');
-var Product = require('../models/product');
+var Product = require('../models/Product');
 var app = require('../app');
 
 router.get('/', isAuthenticated, function(req, res) {

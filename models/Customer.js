@@ -1,7 +1,7 @@
 var mongoose = require("mongoose"),
 	Schema = mongoose.Schema;
 
-var Order = require('./order');
+var Order = require('./Order');
 var Customer = new Schema({
 	name: String,
 	telephone: Number,

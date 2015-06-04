@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var isAuthenticated = require('./isAuthenticated');
-var Tax = require('../models/tax');
+var Tax = require('../models/Tax');
 
 router.get('/', isAuthenticated, function(req, res) {
     Tax.find({ seller: req.session.passport.user }, function(err, taxList) {

@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var isAuthenticated = require('./isAuthenticated');
-var Customer = require('../models/customer');
-var Order = require('../models/order');
+var Customer = require('../models/Customer');
+var Order = require('../models/Order');
 
 router.get('/', isAuthenticated, function(req, res) {
     Customer.find({ seller: req.session.passport.user }, function(err, customerList) {
