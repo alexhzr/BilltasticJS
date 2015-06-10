@@ -40,7 +40,7 @@ router.get('/:customer_id/orders', isAuthenticated, function(req, res) {
 router.post('/', isAuthenticated, function(req, res) {
     var customer = new Customer({
         name: req.body.name,
-        telephone: req.body.telephone,
+        phone: req.body.phone,
         address: req.body.address,
         email: req.body.email,
         seller: req.session.passport.user

@@ -4,7 +4,7 @@ var mongoose = require("mongoose"),
 var Order = require('./Order');
 var Customer = new Schema({
 	name: String,
-	telephone: Number,
+	phone: Number,
 	address: String,
 	email: String,
 	seller: String
