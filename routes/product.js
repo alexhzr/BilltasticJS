@@ -23,7 +23,6 @@ router.get('/:product_id', isAuthenticated, function(req, res) {
 router.post('/', isAuthenticated, function(req, res) {
     var product = new Product ({
         reference: req.body.reference,
-        name: req.body.name,
         description: req.body.description,
         purchase_price: req.body.purchase_price,
         sell_price: req.body.sell_price,

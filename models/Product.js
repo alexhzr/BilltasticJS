@@ -3,7 +3,6 @@ var mongoose = require("mongoose"),
 
 var Product = new Schema({
 	reference: String,
-	name: String,
 	description: String,
 	purchase_price: Number,
 	sell_price: Number,
