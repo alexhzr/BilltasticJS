@@ -22,8 +22,12 @@ router.get('/:product_id', isAuthenticated, function(req, res) {
 
 router.post('/', isAuthenticated, function(req, res) {
     var product = new Product ({
+        reference: req.body.reference,
         name: req.body.name,
-        price: req.body.price,
+        description: req.body.description,
+        purchase_price: req.body.purchase_price,
+        sell_price: req.body.sell_price,
+        tax_price: req.body.sell_price,
         tax: req.body.tax,
         seller: req.session.passport.user
     });

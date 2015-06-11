@@ -21,7 +21,7 @@ router.get('/:customer_id', isAuthenticated, function(req, res) {
     });
 });
 
-router.delete('/:customer_id', /*isAuthenticated,*/ function(req, res) {
+router.delete('/:customer_id', isAuthenticated, function(req, res) {
     Customer.remove({ _id: req.params.customer_id }, function(err) {
         if (err)
             res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error deleting", ERR: err });
@@ -39,6 +39,7 @@ router.get('/:customer_id/orders', isAuthenticated, function(req, res) {
 
 router.post('/', isAuthenticated, function(req, res) {
     var customer = new Customer({
+        id_number: req.body.id_number,
         name: req.body.name,
         phone: req.body.phone,
         address: req.body.address,
