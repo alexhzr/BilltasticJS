@@ -8,12 +8,11 @@ var Customer = new Schema({
 	phone: Number,
 	address: String,
 	email: String,
-	seller: String
+	seller: { type: Schema.Types.ObjectId, ref: 'Seller'}
 });
 
 Customer.post('remove', function(doc) {
-	console.log(doc);
-    Order.remove({ customer: doc._id }).exec();
+  Order.remove({ customer: doc._id }).exec();
 });
 
 module.exports = mongoose.model("Customer", Customer);

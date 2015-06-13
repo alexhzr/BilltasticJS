@@ -20,6 +20,7 @@ var customer = require('./routes/customer');
 var tax = require('./routes/tax');
 var product = require('./routes/product');
 var order = require('./routes/order');
+var my_profile = require('./routes/my_profile');
 
 var app = express();
 
@@ -56,6 +57,7 @@ app.use('/', index);
 app.use('/login', login);
 app.use('/register', register);
 app.use('/logout', logout);
+app.use('/my_profile', my_profile);
 
 //api routes
 app.use('/api/customer', customer);

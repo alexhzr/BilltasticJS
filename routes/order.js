@@ -7,9 +7,9 @@ var moment = require('moment');
 var dateFormat = "DD/MM/YYYY HH:mm:SS";
 
 router.get('/', isAuthenticated, function(req, res) {
-    Order.find({ seller: req.session.passport.user }, function(err, orderList) {
+    Order.find({ seller: req.session.passport.user }, function(err, orders) {
         if (err) return handleError(err);
-        res.json(orderList);
+        res.json(orders);
     });
 });
 
@@ -17,16 +17,14 @@ router.get('/:order_id', isAuthenticated, function(req, res) {
     Order.findById(req.params.order_id, function(err, order) {
         if (err)
             res.json({ SERVER_RESPONSE: 0, SERVER_RESPONSE: "Error loading orders" });
-        else res.json(order);
+        else {
+          order.populate('customer products.product', function(err, order) {
+            if (err)
+              res.json({ SERVER_RESPONSE: 5, SERVER_MESSAGE: "Error populating order" });
+            else res.json(order);
+          });
+        }
     });
-});
-
-router.delete('/:order_id', isAuthenticated, function(req, res) {
-    Order.remove({ _id: req.params.order_id, seller: req.session.passport.user }, function(err, order) {
-        if (err)
-            res.json({ SERVER_RESPONSE: 0, SERVER_RESPONSE: "Error deleting" });
-        else res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Order deleted" });
-    })
 });
 
 router.post('/', isAuthenticated, function(req, res) {
@@ -45,8 +43,21 @@ router.post('/', isAuthenticated, function(req, res) {
     order.save(function(err) {
       if(err)
            res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error creating order"});
-      res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Order created", ObjectID: order._id });
-   });
+      else res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Order created", ObjectId: order._id });
+    });
+});
+
+router.delete('/:order_id', isAuthenticated, function(req, res) {
+    Order.findOne({ _id: req.params.order_id, seller: req.session.passport.user }, function(err, order) {
+        if (err)
+          res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error deleting" });
+        else if (order._id == null)
+          res.json({ SERVER_RESPONSE: 4, SERVER_MESSAGE: "This order doesn't exist" });
+        else {
+          order.remove();
+          res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Order deleted" });
+        }
+    })
 });
 
 module.exports = router;

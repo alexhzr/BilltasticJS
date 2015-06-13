@@ -3,12 +3,12 @@ var router = express.Router();
 var passport = require('passport');
 var isAuthenticated = require('./isAuthenticated');
 var Product = require('../models/Product');
-var app = require('../app');
 
 router.get('/', isAuthenticated, function(req, res) {
-    Product.find({ seller: req.session.passport.user }, function(err, productList) {
-        if (err) return handleError(err);
-        res.json(productList);
+    Product.find({ seller: req.session.passport.user }, function(err, products) {
+        if (err)
+          res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error getting products" });
+        else res.json(products);
     })
 });
 
@@ -16,7 +16,13 @@ router.get('/:product_id', isAuthenticated, function(req, res) {
     Product.findById(req.params.product_id, function(err, product) {
         if (err)
             res.json({ SERVER_RESPONSE: 0, SERVER_RESPONSE: "Error loading products" });
-        res.json(product);
+        else {
+          product.populate('tax', function(err, product) {
+            if (err)
+              res.json({ SERVER_RESPONSE: 5, SERVER_MESSAGE: "Error populating product" });
+            else res.json(product);
+          });
+        }
     });
 });
 
@@ -32,10 +38,23 @@ router.post('/', isAuthenticated, function(req, res) {
     });
 
     product.save(function(err) {
-      if(err)
-           res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error creating product"});
-      res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Product created", ObjectID: product._id });
-   });
+      if (err)
+        res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error creating product"});
+      else res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Product created", ObjectId: product._id });
+    });
+});
+
+router.delete('/:product_id', isAuthenticated, function(req, res) {
+  Product.findOne({ _id: req.params.product_id, seller: req.session.passport.user }, function (err, product) {
+    if (err)
+      res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error" });
+    else if (product._id == null)
+      res.json({ SERVER_RESPONSE: 4, SERVER_MESSAGE: "This product doesn't exist" });
+    else {
+      product.remove();
+      res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Product deleted" });
+    }
+  });
 });
 
 module.exports = router;

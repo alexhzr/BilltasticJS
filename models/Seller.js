@@ -14,12 +14,11 @@ var Seller = new Schema({
 	password: String
 });
 
-Seller.pre('remove', function(next) {
-    Customer.remove({ seller: this._id }).exec();
-    Product.remove({ seller: this._id }).exec();
-    Tax.remove({ seller: this._id }).exec();
-    Order.remove({ seller: this._id }).exec();
-    next();
+Seller.post('remove', function(doc) {
+    Customer.remove({ seller: doc._id }).exec();
+    Product.remove({ seller: doc._id }).exec();
+    Tax.remove({ seller: doc._id }).exec();
+    Order.remove({ seller: doc._id }).exec();
 });
 
 Seller.plugin(passportLocalMongoose);

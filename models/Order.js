@@ -3,9 +3,14 @@ var mongoose = require("mongoose"),
 
 var Order = new Schema({
     order_date: Date,
-    seller: String,
-    customer: String,
-    products: Array,
+    seller: { type: Schema.Types.ObjectId, ref: 'Seller' },
+    customer: { type: Schema.Types.ObjectId, ref: 'Customer' },
+    products: [
+			{
+				product: { type: Schema.Types.ObjectId, ref: 'Product' },
+				amount: Number
+			}
+		],
     total: Number,
     pending: Number,
     status: Number,
