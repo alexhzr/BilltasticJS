@@ -14,8 +14,8 @@ var Order = new Schema({
     total: Number,
     pending: Number,
     status: Number,
-    printed: Number,
-    sent: Number
+    printed: Boolean,
+    sent: Boolean
 });
 
 module.exports = mongoose.model("Order", Order);

@@ -16,7 +16,9 @@ router.get('/', isAuthenticated, function(req, res) {
 router.get('/:order_id', isAuthenticated, function(req, res) {
     Order.findById(req.params.order_id, function(err, order) {
         if (err)
-            res.json({ SERVER_RESPONSE: 0, SERVER_RESPONSE: "Error loading orders" });
+          res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error loading orders" });
+        else if (order == null)
+          res.json({ SERVER_RESPONSE: 4, SERVER_MESSAGE: "This order doesn't exist" });
         else {
           order.populate('customer products.product', function(err, order) {
             if (err)
@@ -36,8 +38,8 @@ router.post('/', isAuthenticated, function(req, res) {
         total: req.body.total,
         pending: req.body.pending,
         status: req.body.status,
-        printed: 0,
-        sent: 0
+        printed: req.body.printed,
+        sent: req.body.sent
     });
 
     order.save(function(err) {
