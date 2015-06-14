@@ -7,10 +7,31 @@ var moment = require('moment');
 var dateFormat = "DD/MM/YYYY HH:mm:SS";
 
 router.get('/', isAuthenticated, function(req, res) {
-    Order.find({ seller: req.session.passport.user }, function(err, orders) {
-        if (err) return handleError(err);
-        res.json(orders);
-    });
+  Order.find({ seller: req.session.passport.user }).populate('customer').exec(function(err, orders) {
+    if (err) res.json({ SERVER_RESPONSE: 0 });
+    res.json(orders);
+  });
+});
+
+router.get('/draft', isAuthenticated, function(req, res) {
+  Order.find({ seller: req.session.passport.user, status: 0 }).populate('customer').exec(function(err, orders) {
+    if (err) res.json({ SERVER_RESPONSE: 0 });
+    res.json(orders);
+  });
+});
+
+router.get('/paid', isAuthenticated, function(req, res) {
+  Order.find({ seller: req.session.passport.user, status: 1 }).populate('customer').exec(function(err, orders) {
+    if (err) res.json({ SERVER_RESPONSE: 0 });
+    res.json(orders);
+  });
+});
+
+router.get('/pending', isAuthenticated, function(req, res) {
+  Order.find({ seller: req.session.passport.user, status: 2 }).populate('customer').exec(function(err, orders) {
+    if (err) res.json({ SERVER_RESPONSE: 0 });
+    res.json(orders);
+  });
 });
 
 router.get('/:order_id', isAuthenticated, function(req, res) {

@@ -4,8 +4,7 @@ var mongoose = require("mongoose"),
 var Product = require('./Product');
 var Tax = new Schema({
 	name: String,
-	value: Number,
-	seller: { type: Schema.Types.ObjectId, ref: 'Seller' }
+	value: Number
 });
 
 Tax.post('remove', function(tax) {

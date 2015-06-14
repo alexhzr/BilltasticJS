@@ -3,12 +3,13 @@ var router = express.Router();
 var passport = require('passport');
 var isAuthenticated = require('./isAuthenticated');
 var Tax = require('../models/Tax');
+var config = require('../config');
 
 router.get('/', isAuthenticated, function(req, res) {
-    Tax.find({ seller: req.session.passport.user }, function(err, taxes) {
+    Tax.find({}, function(err, taxes) {
         if (err) return handleError(err);
         res.json(taxes);
-    })
+    });
 });
 
 router.get('/:tax_id', isAuthenticated, function(req, res) {
@@ -20,30 +21,33 @@ router.get('/:tax_id', isAuthenticated, function(req, res) {
 });
 
 router.post('/', isAuthenticated, function(req, res) {
-    var tax = new Tax ({
-        name: req.body.name,
-        value: req.body.value,
-        seller: req.session.passport.user
-    });
+  if (config.environment == "development") {
+      var tax = new Tax ({
+          name: req.body.name,
+          value: req.body.value
+      });
 
-    tax.save(function(err) {
-      if(err)
-        res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error creating tax" });
-      else res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Tax created", ObjectID: tax._id });
-    });
+      tax.save(function(err) {
+        if(err)
+          res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error creating tax" });
+        else res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Tax created", ObjectID: tax._id });
+      });
+  }
 });
 
 router.delete('/:tax_id', isAuthenticated, function(req, res) {
-  Tax.findOne({ _id: req.params.tax_id, seller: req.session.passport.user }, function(err, tax) {
-    if (err)
-      res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error deleting tax" });
-    else if (tax._id == null)
-        res.json({ SERVER_RESPONSE: 4, SERVER_MESSAGE: "This tax doesn't exist" });
-    else {
-      tax.remove();
-      res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Tax deleted" });
-    }
-  });
+  if (config.environment == "development") {
+    Tax.findOne({ _id: req.params.tax_id, seller: req.session.passport.user }, function(err, tax) {
+      if (err)
+        res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error deleting tax" });
+      else if (tax._id == null)
+          res.json({ SERVER_RESPONSE: 4, SERVER_MESSAGE: "This tax doesn't exist" });
+      else {
+        tax.remove();
+        res.json({ SERVER_RESPONSE: 1, SERVER_MESSAGE: "Tax deleted" });
+      }
+    });
+  }
 });
 
 module.exports = router;

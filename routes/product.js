@@ -26,7 +26,18 @@ router.get('/:product_id', isAuthenticated, function(req, res) {
     });
 });
 
+router.get('/check_reference/:reference', isAuthenticated, function(req, res) {
+  Product.findOne({ reference: req.params.reference, seller: req.session.passport.user }, function(err, product) {
+    if (err)
+      res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE:"There was an error" });
+    else if (product == null)
+      res.json({ SERVER_RESPONSE: 4, SERVER_MESSAGE: "No product found" });
+    else res.json({ SERVER_RESPONSE: 3, SERVER_MESSAGE: "This reference is being used" });
+  });
+});
+
 router.post('/', isAuthenticated, function(req, res) {
+  console.log(req.body);
     var product = new Product ({
         reference: req.body.reference,
         description: req.body.description,
