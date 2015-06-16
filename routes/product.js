@@ -5,14 +5,25 @@ var isAuthenticated = require('./isAuthenticated');
 var Product = require('../models/Product');
 
 router.get('/', isAuthenticated, function(req, res) {
-    Product.find({ seller: req.session.passport.user }, function(err, products) {
+    Product.find({ seller: req.session.passport.user }).populate('tax').exec(function(err, products) {
         if (err)
           res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error getting products" });
         else res.json(products);
-    })
+    });
 });
 
-router.get('/:product_id', isAuthenticated, function(req, res) {
+router.get('/search/:query', function(req, res) {
+  var regex = new RegExp(req.params.query, "i");
+  Product.find({
+    seller: req.session.passport.user,
+    reference: regex
+  }, function(err, products) {
+    if (err) res.json({ SERVER_RESPONSE: 0 });
+    else res.json(products);
+  });
+});
+
+router.get('/get/:product_id', isAuthenticated, function(req, res) {
     Product.findById(req.params.product_id, function(err, product) {
         if (err)
             res.json({ SERVER_RESPONSE: 0, SERVER_RESPONSE: "Error loading products" });

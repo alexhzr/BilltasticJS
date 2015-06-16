@@ -13,7 +13,18 @@ router.get('/', isAuthenticated, function(req, res) {
     });
 });
 
-router.get('/:customer_id', isAuthenticated, function(req, res) {
+router.get('/search/:query', isAuthenticated, function(req,res) {
+  var regex = new RegExp(req.params.query, "i");
+  Customer.find({
+    seller: req.session.passport.user,
+    name: regex
+  }, function(err, customers) {
+    if (err) res.json({ SERVER_RESPONSE: 0});
+    else res.json(customers);
+  })
+})
+
+router.get('/get/:customer_id', isAuthenticated, function(req, res) {
     Customer.findById(req.params.customer_id, function(err, customer) {
         if (err)
           res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error getting customer info" });
