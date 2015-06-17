@@ -2,12 +2,11 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', function(req, res) {
-	res.json({ mensaje: "HOLA" });
+	res.render('index');
 });
 
-router.post('/', function(req, res) {
-    res.json({ mensaje: "POST" });
-    console.log(req.body);
+router.get('/download', function(req, res) {
+	res.download('public/Billtastic.apk');
 });
 
 module.exports = router;

@@ -55,7 +55,7 @@ router.post('/', isAuthenticated, function(req, res) {
         order_date: moment(req.body.order_date, dateFormat),
         seller: req.session.passport.user,
         customer: req.body.customer,
-        products: req.body.products,
+        products: JSON.parse(req.body.products),
         total: req.body.total,
         pending: req.body.pending,
         status: req.body.status,
@@ -74,7 +74,7 @@ router.delete('/:order_id', isAuthenticated, function(req, res) {
     Order.findOne({ _id: req.params.order_id, seller: req.session.passport.user }, function(err, order) {
         if (err)
           res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error deleting" });
-        else if (order._id == null)
+        else if (order == null)
           res.json({ SERVER_RESPONSE: 4, SERVER_MESSAGE: "This order doesn't exist" });
         else {
           order.remove();

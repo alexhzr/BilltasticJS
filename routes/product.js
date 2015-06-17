@@ -23,6 +23,14 @@ router.get('/search/:query', function(req, res) {
   });
 });
 
+router.get('/get_by_reference/:reference', function(req, res) {
+    Product.findOne({ seller: req.session.passport.user, reference: req.params.reference }, function(err, product) {
+      if (err) res.json({SERVER_RESPONSE: 0});
+      else if (product == null) res.json({SERVER_RESPONSE:4});
+      else res.json(product);
+    });
+});
+
 router.get('/get/:product_id', isAuthenticated, function(req, res) {
     Product.findById(req.params.product_id, function(err, product) {
         if (err)
@@ -68,9 +76,9 @@ router.post('/', isAuthenticated, function(req, res) {
 
 router.delete('/:product_id', isAuthenticated, function(req, res) {
   Product.findOne({ _id: req.params.product_id, seller: req.session.passport.user }, function (err, product) {
-    if (err)
+    if (err) {
       res.json({ SERVER_RESPONSE: 0, SERVER_MESSAGE: "Error" });
-    else if (product._id == null)
+    } else if (product == null)
       res.json({ SERVER_RESPONSE: 4, SERVER_MESSAGE: "This product doesn't exist" });
     else {
       product.remove();
